@@ -1,0 +1,37 @@
+version: '2'
+services:
+  project:
+    image: httpd
+    volumes:
+      - filestore:/usr/local/apache2/htdocs:rw
+    depends_on:
+      - watcher
+    ports:
+      - "80:80"
+  initial-sync:
+    build: .
+    volumes:
+      - filestore:/mnt/watcher:rw
+    environment:
+      - DIR_PATH=/mnt/watcher
+      - BUCKET_NAME=test-s3fs-poc
+      - AWS_ACCESS_KEY_ID=DEMO_KEY_ID
+      - AWS_SECRET_ACCESS_KEY=DEMO_KEY
+      - AWS_DEFAULT_REGION=eu-central-1
+      - INITIAL_SYNC=true
+  watcher:
+    build: .
+    volumes:
+      - filestore:/mnt/watcher:rw
+    depends_on:
+      initial-sync:
+        condition: service_completed_successfully
+    environment:
+      - DIR_PATH=/mnt/watcher
+      - BUCKET_NAME=test-s3fs-poc
+      - AWS_ACCESS_KEY_ID=DEMO_KEY_ID
+      - AWS_SECRET_ACCESS_KEY=DEMO_KEY
+      - AWS_DEFAULT_REGION=eu-central-1
+      - INITIAL_SYNC=false
+volumes:
+  filestore:
