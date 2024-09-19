@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
     inotify-tools \
     awscli
 
-RUN figlet 'Fswatch Custom Image'\
+RUN figlet 'Inotify Custom Image'\
     && figlet 'KP Infotech'
 
 COPY start.sh /start.sh
