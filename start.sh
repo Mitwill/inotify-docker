@@ -8,7 +8,7 @@ export INITIAL_SYNC=${INITIAL_SYNC:-false}
 
 if [ $INITIAL_SYNC = "true" ]; then
     echo "Initial sync"
-    aws s3 sync s3://$BUCKET_NAME $DIR_PATH --delete
+    aws s3 sync s3://$BUCKET_NAME $DIR_PATH
     exit 0
 fi
 
